@@ -160,26 +160,34 @@
 
     // Default starter template pre-filled in the editor
     const defaultCode = `<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(135deg, #fbcfe8, #c084fc);
+      color: #3b0764;
+    }
+    h1 { margin-bottom: 10px; }
+    button {
+      padding: 10px 20px;
+      background-color: #3b0764;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover { background-color: #581c87; }
+  </style>
 </head>
 <body>
-
-  <header>
-    <h1>My Website</h1>
-  </header>
-
-  <main>
-    <p>Welcome to my website!</p>
-  </main>
-
-  <footer>
-    <p>&copy; 2026 My Website</p>
-  </footer>
-
+  <h1>Hello, World!</h1>
+  <p>Type HTML on the left to see live changes here.</p>
+  <br>
+  <button onclick="alert('It works!')">Click Me</button>
 </body>
 </html>`;
 
@@ -201,3 +209,9 @@
     codeEditor.addEventListener('input', updatePreview);
 
     // Initial setup
+    codeEditor.value = defaultCode;
+    updatePreview();
+  </script>
+
+</body>
+</html>
