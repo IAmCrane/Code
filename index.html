@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Code Snippets</title>
+  <title>Starter Template - Code Snippets</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -13,7 +13,12 @@
       background-color: #f6f8fa;
       color: #24292f;
     }
-    h1 { border-bottom: 2px solid #d0d7de; padding-bottom: 8px; }
+
+    h1 {
+      border-bottom: 2px solid #d0d7de;
+      padding-bottom: 8px;
+    }
+
     .snippet-card {
       background: white;
       border: 1px solid #d0d7de;
@@ -21,19 +26,24 @@
       margin-bottom: 20px;
       padding: 16px;
     }
+
     .snippet-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
+
     pre {
       background: #0d1117;
       color: #e6edf3;
       padding: 12px;
       border-radius: 6px;
       overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
+
     button {
       background-color: #2da44e;
       color: white;
@@ -42,41 +52,54 @@
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
+      transition: background-color 0.2s;
     }
-    button:hover { background-color: #2c974b; }
+
+    button:hover {
+      background-color: #2c974b;
+    }
   </style>
 </head>
 <body>
 
-  <h1>My Code Snippets</h1>
+  <h1>Code Snippets</h1>
 
-  <!-- Snippet 1 -->
+  <!-- Starter HTML Snippet Card -->
   <div class="snippet-card">
     <div class="snippet-header">
-      <h3>Python: Read File</h3>
-      <button onclick="copySnippet('code-1')">Copy Code</button>
+      <h3>HTML5 Starter Template</h3>
+      <button onclick="copySnippet('starter-html')">Copy Code</button>
     </div>
-    <pre><code id="code-1">with open('file.txt', 'r') as f:
-    content = f.read()
-    print(content)</code></pre>
-  </div>
+    <pre><code id="starter-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
 
-  <!-- Snippet 2 -->
-  <div class="snippet-card">
-    <div class="snippet-header">
-      <h3>JS: Fetch API Request</h3>
-      <button onclick="copySnippet('code-2')">Copy Code</button>
-    </div>
-    <pre><code id="code-2">fetch('https://api.example.com/data')
-  .then(res => res.json())
-  .then(data => console.log(data));</code></pre>
+  &lt;header&gt;
+    &lt;h1&gt;My Website&lt;/h1&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;p&gt;Welcome to my website!&lt;/p&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2026 My Website&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
   </div>
 
   <script>
     function copySnippet(id) {
       const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert('Copied to clipboard!');
+        alert('Starter HTML copied to clipboard!');
       });
     }
   </script>
