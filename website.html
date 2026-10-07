@@ -1,1 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Live Preview Sandbox</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #0d1117;
+      color: #e6edf3;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      color: #f0f6fc;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      background-color: #238636;
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #2ea043;
+    }
+
+    .nav-link {
+      color: #58a6ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Split Workspace Container */
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .editor-section, .preview-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-section {
+      border-right: 1px solid #30363d;
+    }
+
+    .section-header {
+      background-color: #21262d;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      background-color: #0d1117;
+      color: #7ee787;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 1rem;
+      padding: 16px;
+      border: none;
+      outline: none;
+      resize: none;
+      line-height: 1.5;
+    }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #ffffff;
+    }
+
+    /* Responsive layout for smaller screens */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .editor-section {
+        border-right: none;
+        border-bottom: 1px solid #30363d;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>HTML Live Preview</h1>
+    <div class="header-actions">
+      <button class="btn" onclick="clearCode()">Clear</button>
+      <a href="index.html" class="nav-link">&larr; Back to Snippets</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Code Input Section -->
+    <div class="editor-section">
+      <div class="section-header">Code Editor</div>
+      <textarea id="code" placeholder="Type your HTML here..." spellcheck="false"></textarea>
+    </div>
+
+    <!-- Live Output Preview Section -->
+    <div class="preview-section">
+      <div class="section-header">Live Preview</div>
+      <iframe id="preview"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const codeEditor = document.getElementById('code');
+    const previewFrame = document.getElementById('preview');
+
+    // Default starter template pre-filled in the editor
+    const defaultCode = `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(135deg, #fbcfe8, #c084fc);
+      color: #3b0764;
+    }
+    h1 { margin-bottom: 10px; }
+    button {
+      padding: 10px 20px;
+      background-color: #3b0764;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover { background-color: #581c87; }
+  </style>
+</head>
+<body>
+  <h1>Hello, World!</h1>
+  <p>Type HTML on the left to see live changes here.</p>
+  <br>
+  <button onclick="alert('It works!')">Click Me</button>
+</body>
+</html>`;
+
+    // Function to render code into iframe
+    function updatePreview() {
+      const code = codeEditor.value;
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(code);
+      iframeDoc.close();
+    }
+
+    function clearCode() {
+      codeEditor.value = '';
+      updatePreview();
+    }
+
+    // Event listener for live updates on typing
+    codeEditor.addEventListener('input', updatePreview);
+
+    // Initial setup
+    codeEditor.value = defaultCode;
+    updatePreview();
+  </script>
+
+</body>
+</html>
