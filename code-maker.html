@@ -1,323 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Code Customizer</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Code Customizer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f4f5f7;
+      color: #333;
+    }
+    
+    /* Control Panel Styles */
+    .sidebar {
+      width: 380px;
+      background: #ffffff;
+      border-right: 1px solid #e1e4e8;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar h2 {
+      font-size: 1.25rem;
+      color: #111;
+    }
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background-color: #f3f4f6;
+      color: #24292f;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+    .home-btn:hover {
+      background-color: #e5e7eb;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #444;
+    }
+    .control-group input[type="text"],
+    .control-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .control-group textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    
+    /* Dynamic Section Styling */
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .section-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+    .section-actions {
+      display: flex;
+      gap: 4px;
+    }
+    .icon-btn {
+      background: #e5e7eb;
+      border: none;
+      border-radius: 4px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover {
+      background: #d1d5db;
+    }
+    .icon-btn.delete-btn {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .icon-btn.delete-btn:hover {
+      background: #fca5a5;
+    }
 
-        body {
-            display: flex;
-            height: 100vh;
-            background-color: #f4f5f7;
-            color: #333;
-        }
+    .add-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-secondary {
+      flex: 1;
+      padding: 8px;
+      background-color: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .btn-secondary:hover {
+      background-color: #e5e7eb;
+    }
 
-        /* Control Panel Styles */
-        .sidebar {
-            width: 360px;
-            background: #ffffff;
-            border-right: 1px solid #e1e4e8;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-        }
+    .color-pickers {
+      display: flex;
+      gap: 16px;
+    }
+    .color-picker-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .color-picker-item input[type="color"] {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+    }
+    
+    button.btn {
+      padding: 10px 16px;
+      background-color: #2da44e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button.btn:hover {
+      background-color: #2c974b;
+    }
 
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar h2 {
-            font-size: 1.25rem;
-            color: #111;
-        }
-
-        .home-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background-color: #f3f4f6;
-            color: #24292f;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: background-color 0.2s;
-        }
-
-        .home-btn:hover {
-            background-color: #e5e7eb;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .control-group label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #444;
-        }
-
-        .control-group input[type="text"],
-        .control-group textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-
-        .control-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .color-pickers {
-            display: flex;
-            gap: 16px;
-        }
-
-        .color-picker-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .color-picker-item input[type="color"] {
-            width: 100%;
-            height: 38px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            cursor: pointer;
-            background: none;
-        }
-
-        button.btn {
-            padding: 10px 16px;
-            background-color: #2da44e;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        button.btn:hover {
-            background-color: #2c974b;
-        }
-
-        /* Output & Preview Area */
-        .workspace {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            gap: 20px;
-        }
-
-        .preview-container {
-            flex: 1;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .preview-header {
-            background: #f6f8fa;
-            padding: 10px 16px;
-            border-bottom: 1px solid #e1e4e8;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #57606a;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .code-container {
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            background: #1e1e1e;
-            overflow: hidden;
-        }
-
-        .code-header {
-            background: #2d2d2d;
-            padding: 8px 16px;
-            color: #ccc;
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .code-header button {
-            background: #3c3c3c;
-            color: #fff;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-
-        textarea#generated-code {
-            width: 100%;
-            height: 100%;
-            background: #1e1e1e;
-            color: #d4d4d4;
-            border: none;
-            padding: 12px;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 0.85rem;
-            resize: none;
-            outline: none;
-        }
-    </style>
+    /* Output & Preview Area */
+    .workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      gap: 20px;
+    }
+    .preview-container {
+      flex: 1;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .preview-header {
+      background: #f6f8fa;
+      padding: 10px 16px;
+      border-bottom: 1px solid #e1e4e8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #57606a;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .code-container {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      background: #1e1e1e;
+      overflow: hidden;
+    }
+    .code-header {
+      background: #2d2d2d;
+      padding: 8px 16px;
+      color: #ccc;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .code-header button {
+      background: #3c3c3c;
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    textarea#generated-code {
+      width: 100%;
+      height: 100%;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border: none;
+      padding: 12px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.85rem;
+      resize: none;
+      outline: none;
+    }
+  </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>Controls</h2>
-            <a href="index.html" class="home-btn">&larr; Home</a>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Controls</h2>
+      <a href="index.html" class="home-btn">&larr; Home</a>
+    </div>
+
+    <div class="control-group">
+      <label for="doc-title">Document Title</label>
+      <input type="text" id="doc-title" value="Document">
+    </div>
+
+    <div class="add-buttons">
+      <button class="btn-secondary" onclick="addParagraph()">+ Add Paragraph</button>
+      <button class="btn-secondary" onclick="addImage()">+ Add Photo</button>
+    </div>
+
+    <div class="sections-container" id="sections-container">
+      <!-- Default Sections -->
+      <div class="section-card" data-type="heading">
+        <div class="section-header">
+          <span class="section-title">Main Heading</span>
+          <div class="section-actions">
+            <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+            <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+          </div>
         </div>
+        <input type="text" class="section-input" value="My Website">
+      </div>
 
-        <div class="control-group">
-            <label for="doc-title">Document Title</label>
-            <input type="text" id="doc-title" value="Document">
+      <div class="section-card" data-type="paragraph">
+        <div class="section-header">
+          <span class="section-title">Paragraph</span>
+          <div class="section-actions">
+            <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+            <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+            <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+          </div>
         </div>
+        <textarea class="section-input">Welcome to my website!</textarea>
+      </div>
 
-        <div class="control-group">
-            <label for="heading-text">Main Heading</label>
-            <input type="text" id="heading-text" value="My Website">
+      <div class="section-card" data-type="footer">
+        <div class="section-header">
+          <span class="section-title">Footer Text</span>
+          <div class="section-actions">
+            <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+            <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+          </div>
         </div>
+        <input type="text" class="section-input" value="My Website">
+      </div>
+    </div>
 
-        <div class="control-group">
-            <label for="body-text">Welcome Message</label>
-            <textarea id="body-text">Welcome to my website!</textarea>
-        </div>
+    <div class="color-pickers">
+      <div class="color-picker-item">
+        <label for="bg-color">Background</label>
+        <input type="color" id="bg-color" value="#ffffff">
+      </div>
+      <div class="color-picker-item">
+        <label for="text-color">Text Color</label>
+        <input type="color" id="text-color" value="#000000">
+      </div>
+    </div>
 
-        <div class="control-group">
-            <label for="footer-text">Footer Text</label>
-            <input type="text" id="footer-text" value="My Website">
-        </div>
+    <button class="btn" onclick="copyCode()">Copy HTML Code</button>
+  </aside>
 
-        <div class="color-pickers">
-            <div class="color-picker-item">
-                <label for="bg-color">Background</label>
-                <input type="color" id="bg-color" value="#ffffff">
-            </div>
-            <div class="color-picker-item">
-                <label for="text-color">Text Color</label>
-                <input type="color" id="text-color" value="#000000">
-            </div>
-        </div>
+  <main class="workspace">
+    <div class="preview-container">
+      <div class="preview-header">Live Preview</div>
+      <iframe id="preview-frame"></iframe>
+    </div>
 
-        <button class="btn" onclick="copyCode()">Copy HTML Code</button>
-    </aside>
+    <div class="code-container">
+      <div class="code-header">
+        <span>Generated Code</span>
+        <button onclick="copyCode()">Copy</button>
+      </div>
+      <textarea id="generated-code" readonly></textarea>
+    </div>
+  </main>
 
-    <main class="workspace">
-        <div class="preview-container">
-            <div class="preview-header">Live Preview</div>
-            <iframe id="preview-frame"></iframe>
-        </div>
+  <script>
+    const docTitle = document.getElementById('doc-title');
+    const bgColor = document.getElementById('bg-color');
+    const textColor = document.getElementById('text-color');
+    const previewFrame = document.getElementById('preview-frame');
+    const generatedCode = document.getElementById('generated-code');
+    const sectionsContainer = document.getElementById('sections-container');
 
-        <div class="code-container">
-            <div class="code-header">
-                <span>Generated Code</span>
-                <button onclick="copyCode()">Copy</button>
-            </div>
-            <textarea id="generated-code" readonly></textarea>
-        </div>
-    </main>
+    function updateCode() {
+      const cards = sectionsContainer.querySelectorAll('.section-card');
+      let bodyElementsHtml = '';
 
-    <script>
-        const docTitle = document.getElementById('doc-title');
-        const headingText = document.getElementById('heading-text');
-        const bodyText = document.getElementById('body-text');
-        const footerText = document.getElementById('footer-text');
-        const bgColor = document.getElementById('bg-color');
-        const textColor = document.getElementById('text-color');
-        
-        const previewFrame = document.getElementById('preview-frame');
-        const generatedCode = document.getElementById('generated-code');
+      cards.forEach(card => {
+        const type = card.dataset.type;
+        if (type === 'heading') {
+          const val = card.querySelector('.section-input').value;
+          bodyElementsHtml += `  <header>\n    <h1>${val}</h1>\n  </header>\n`;
+        } else if (type === 'paragraph') {
+          const val = card.querySelector('.section-input').value;
+          bodyElementsHtml += `  <p>${val}</p>\n`;
+        } else if (type === 'image') {
+          const src = card.querySelector('.img-src-input').value;
+          const alt = card.querySelector('.img-alt-input').value;
+          bodyElementsHtml += `  <img src="${src}" alt="${alt}" style="max-width:100%; height:auto;">\n`;
+        } else if (type === 'footer') {
+          const val = card.querySelector('.section-input').value;
+          bodyElementsHtml += `  <footer>\n    <p>&copy; ${new Date().getFullYear()} ${val}</p>\n  </footer>\n`;
+        }
+      });
 
-        function updateCode() {
-            const html = `<!DOCTYPE html>
+      const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${docTitle.value}</title>
-    <style>
-        body {
-            text-align: center;
-            background-color: ${bgColor.value};
-            color: ${textColor.value};
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${docTitle.value}</title>
+  <style>
+    body {
+      text-align: center;
+      background-color: ${bgColor.value};
+      color: ${textColor.value};
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>${headingText.value}</h1>
-    </header>
-    <main>
-        <p>${bodyText.value}</p>
-    </main>
-    <footer>
-        <p>&copy; ${new Date().getFullYear()} ${footerText.value}</p>
-    </footer>
-</body>
+${bodyElementsHtml}</body>
 </html>`;
 
-            generatedCode.value = html;
-            previewFrame.srcdoc = html;
-        }
+      generatedCode.value = html;
+      previewFrame.srcdoc = html;
+    }
 
-        function copyCode() {
-            generatedCode.select();
-            navigator.clipboard.writeText(generatedCode.value);
-            alert('Code copied to clipboard!');
-        }
+    function addParagraph() {
+      const card = document.createElement('div');
+      card.className = 'section-card';
+      card.dataset.type = 'paragraph';
+      card.innerHTML = `
+        <div class="section-header">
+          <span class="section-title">Paragraph</span>
+          <div class="section-actions">
+            <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+            <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+            <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+          </div>
+        </div>
+        <textarea class="section-input">text goes here</textarea>
+      `;
+      sectionsContainer.appendChild(card);
+      attachInputListeners(card);
+      updateCode();
+    }
 
-        // Event listeners for real-time updates
-        docTitle.addEventListener('input', updateCode);
-        headingText.addEventListener('input', updateCode);
-        bodyText.addEventListener('input', updateCode);
-        footerText.addEventListener('input', updateCode);
-        bgColor.addEventListener('input', updateCode);
-        textColor.addEventListener('input', updateCode);
+    function addImage() {
+      const card = document.createElement('div');
+      card.className = 'section-card';
+      card.dataset.type = 'image';
+      card.innerHTML = `
+        <div class="section-header">
+          <span class="section-title">Photo / Image</span>
+          <div class="section-actions">
+            <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+            <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+            <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+          </div>
+        </div>
+        <input type="text" class="img-src-input" placeholder="Image URL" value="https://via.placeholder.com/150">
+        <input type="text" class="img-alt-input" placeholder="Alt text" value="Sample Image">
+      `;
+      sectionsContainer.appendChild(card);
+      attachInputListeners(card);
+      updateCode();
+    }
 
-        // Initial render
+    function moveUp(btn) {
+      const card = btn.closest('.section-card');
+      if (card.previousElementSibling) {
+        sectionsContainer.insertBefore(card, card.previousElementSibling);
         updateCode();
-    </script>
+      }
+    }
+
+    function moveDown(btn) {
+      const card = btn.closest('.section-card');
+      if (card.nextElementSibling) {
+        sectionsContainer.insertBefore(card.nextElementSibling, card);
+        updateCode();
+      }
+    }
+
+    function deleteSection(btn) {
+      const card = btn.closest('.section-card');
+      card.remove();
+      updateCode();
+    }
+
+    function attachInputListeners(element) {
+      const inputs = element.querySelectorAll('input, textarea');
+      inputs.forEach(input => input.addEventListener('input', updateCode));
+    }
+
+    function copyCode() {
+      generatedCode.select();
+      navigator.clipboard.writeText(generatedCode.value);
+      alert('Code copied to clipboard!');
+    }
+
+    // Attach listeners to static inputs
+    docTitle.addEventListener('input', updateCode);
+    bgColor.addEventListener('input', updateCode);
+    textColor.addEventListener('input', updateCode);
+    sectionsContainer.querySelectorAll('.section-card').forEach(attachInputListeners);
+
+    // Initial render
+    updateCode();
+  </script>
 </body>
 </html>
