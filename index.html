@@ -23,6 +23,11 @@
             margin-bottom: 20px;
         }
 
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
         h1 {
             margin: 0;
         }
@@ -87,7 +92,10 @@
 
     <div class="top-bar">
         <h1>Code Snippets</h1>
-        <a href="website.html" class="nav-btn">Go to Code Preview &rarr;</a>
+        <div class="nav-links">
+            <a href="website.html" class="nav-btn">Go to Code Preview &rarr;</a>
+            <a href="code-maker.html" class="nav-btn">HTML Code Maker &rarr;</a>
+        </div>
     </div>
 
     <!-- Starter HTML Snippet Card -->
@@ -115,23 +123,4 @@
         &lt;h1&gt;My Website&lt;/h1&gt;
     &lt;/header&gt;
     &lt;main&gt;
-        &lt;p&gt;Welcome to my website!&lt;/p&gt;
-    &lt;/main&gt;
-    &lt;footer&gt;
-        &lt;p&gt;&amp;copy; 2026 My Website&lt;/p&gt;
-    &lt;/footer&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-    </div>
-
-    <script>
-        function copySnippet(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Starter HTML copied to clipboard!');
-            });
-        }
-    </script>
-
-</body>
-</html>
+        &lt;p&gt;Welcome to my
