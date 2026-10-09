@@ -197,6 +197,11 @@
             <textarea id="body-text">Welcome to my website!</textarea>
         </div>
 
+        <div class="control-group">
+            <label for="footer-text">Footer Text</label>
+            <input type="text" id="footer-text" value="My Website">
+        </div>
+
         <div class="color-pickers">
             <div class="color-picker-item">
                 <label for="bg-color">Background</label>
@@ -230,6 +235,7 @@
         const docTitle = document.getElementById('doc-title');
         const headingText = document.getElementById('heading-text');
         const bodyText = document.getElementById('body-text');
+        const footerText = document.getElementById('footer-text');
         const bgColor = document.getElementById('bg-color');
         const textColor = document.getElementById('text-color');
         
@@ -259,7 +265,7 @@
         <p>${bodyText.value}</p>
     </main>
     <footer>
-        <p>&copy; ${new Date().getFullYear()} ${headingText.value}</p>
+        <p>&copy; ${new Date().getFullYear()} ${footerText.value}</p>
     </footer>
 </body>
 </html>`;
@@ -274,10 +280,11 @@
             alert('Code copied to clipboard!');
         }
 
-        // Attach event listeners for real-time updates
+        // Event listeners for real-time updates
         docTitle.addEventListener('input', updateCode);
         headingText.addEventListener('input', updateCode);
         bodyText.addEventListener('input', updateCode);
+        footerText.addEventListener('input', updateCode);
         bgColor.addEventListener('input', updateCode);
         textColor.addEventListener('input', updateCode);
 
