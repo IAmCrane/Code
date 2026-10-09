@@ -31,9 +31,34 @@
             overflow-y: auto;
         }
 
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .sidebar h2 {
             font-size: 1.25rem;
             color: #111;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: #f3f4f6;
+            color: #24292f;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .home-btn:hover {
+            background-color: #e5e7eb;
         }
 
         .control-group {
@@ -180,7 +205,10 @@
 <body>
 
     <aside class="sidebar">
-        <h2>Customizer Controls</h2>
+        <div class="sidebar-header">
+            <h2>Controls</h2>
+            <a href="index.html" class="home-btn">&larr; Home</a>
+        </div>
 
         <div class="control-group">
             <label for="doc-title">Document Title</label>
