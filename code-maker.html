@@ -162,8 +162,8 @@
           const src = card.querySelector('.img-src-input').value;
           const alt = card.querySelector('.img-alt-input').value;
           bodyElementsHtml += `  <img src="${src}" alt="${alt}" style="max-width:100%; height:auto;">\n`;
-        } else if (type === 'hr') {
-          bodyElementsHtml += `  <hr>\n`;
+        } else if (type === 'br') {
+          bodyElementsHtml += `  <br>\n`;
         } else if (type === 'footer') {
           const val = card.querySelector('.section-input').value;
           bodyElementsHtml += `  <footer>\n    <p>&copy; ${new Date().getFullYear()} ${val}</p>\n  </footer>\n`;
@@ -234,10 +234,10 @@ ${bodyElementsHtml}</body>
     function addLineBreak() {
       const card = document.createElement('div');
       card.className = 'section-card';
-      card.dataset.type = 'hr';
+      card.dataset.type = 'br';
       card.innerHTML = `
         <div class="section-header">
-          <span class="section-title">Line Break (&lt;hr&gt;)</span>
+          <span class="section-title">Line Break (&lt;br&gt;)</span>
           <div class="section-actions">
             <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
             <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
