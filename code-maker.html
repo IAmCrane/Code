@@ -16,7 +16,7 @@
     .home-btn:hover {background-color: #e5e7eb;}
     .control-group {display: flex; flex-direction: column; gap: 8px;}
     .control-group label {font-size: 0.875rem; font-weight: 600; color: #444;}
-    .control-group input[type="text"], .control-group textarea {width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem;}
+    .control-group input[type="text"], .control-group select, .control-group textarea {width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; background: #fff;}
     .control-group textarea {resize: vertical; min-height: 60px;}
 
     /* Dynamic Section Styling */
@@ -64,6 +64,20 @@
     <div class="control-group">
       <label for="doc-title">Website Title</label>
       <input type="text" id="doc-title" value="Document">
+    </div>
+
+    <div class="control-group">
+      <label for="font-family">Font Family</label>
+      <select id="font-family">
+        <option value="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">System Default / Arial</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="Helvetica, sans-serif">Helvetica</option>
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Courier New', Courier, monospace">Courier New</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+      </select>
     </div>
 
     <div class="add-buttons">
@@ -140,6 +154,7 @@
 
   <script>
     const docTitle = document.getElementById('doc-title');
+    const fontFamily = document.getElementById('font-family');
     const bgColor = document.getElementById('bg-color');
     const textColor = document.getElementById('text-color');
     const previewFrame = document.getElementById('preview-frame');
@@ -177,7 +192,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${docTitle.value}</title>
   <style>
-    body {text-align: center; background-color: ${bgColor.value}; color: ${textColor.value}; padding: 20px;}
+    body {font-family: ${fontFamily.value}; text-align: center; background-color: ${bgColor.value}; color: ${textColor.value}; padding: 20px;}
   </style>
 </head>
 <body>
@@ -295,6 +310,7 @@ ${bodyElementsHtml}</body>
 
     // Attach listeners to static inputs
     docTitle.addEventListener('input', updateCode);
+    fontFamily.addEventListener('change', updateCode);
     bgColor.addEventListener('input', updateCode);
     textColor.addEventListener('input', updateCode);
     sectionsContainer.querySelectorAll('.section-card').forEach(attachInputListeners);
