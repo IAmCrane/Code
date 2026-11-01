@@ -3,34 +3,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cotgrave</title>
+<title>HTML Code Customizer</title>
 <style>
-    body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; background-color: #ebf5ff; color: #000000; padding: 20px;}
+    * {box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;}
+    body {display: flex; height: 100vh; background-color: #f4f5f7; color: #333;}
+    
+    /* Control Panel Styles */
+    .sidebar {width: 420px; background: #ffffff; border-right: 1px solid #e1e4e8; padding: 24px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto;}
+    .sidebar-header {display: flex; justify-content: space-between; align-items: center;}
+    .sidebar h2 {font-size: 1.25rem; color: #111;}
+    .home-btn {display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background-color: #f3f4f6; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: background-color 0.2s;}
+    .home-btn:hover {background-color: #e5e7eb;}
+    .control-group {display: flex; flex-direction: column; gap: 8px;}
+    .control-group label {font-size: 0.875rem; font-weight: 600; color: #444;}
+    .control-group input[type="text"], .control-group select, .control-group textarea {width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; background: #fff;}
+    .control-group textarea {resize: vertical; min-height: 60px;}
+
+    /* Dynamic Section Styling */
+    .sections-container {display: flex; flex-direction: column; gap: 12px;}
+    .section-card {background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;}
+    .section-header {display: flex; justify-content: space-between; align-items: center;}
+    .section-title {font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #6b7280;}
+    .section-actions {display: flex; gap: 4px;}
+
+    /* Scratch-like Container Styling */
+    .section-card[data-type="box"] {background: #eff6ff; border: 2px dashed #93c5fd;}
+    .box-content-container {display: flex; flex-direction: column; gap: 8px; padding-left: 10px; border-left: 2px solid #bfdbfe; margin-top: 4px;}
+    .inner-card {background: #ffffff; border: 1px solid #dbeafe; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px;}
+
+    .icon-btn {background: #e5e7eb; border: none; border-radius: 4px; width: 24px; height: 24px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center;}
+    .icon-btn:hover {background: #d1d5db;}
+    .icon-btn.delete-btn {background: #fee2e2; color: #dc2626;}
+    .icon-btn.delete-btn:hover {background: #fca5a5;}
+
+    .add-buttons {display: flex; gap: 8px; flex-wrap: wrap;}
+    .btn-secondary {flex: 1; min-width: calc(25% - 6px); padding: 8px; background-color: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: background-color 0.2s;}
+    .btn-secondary:hover {background-color: #e5e7eb;}
+    
+    .btn-inner {padding: 6px 10px; background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 4px; font-weight: 600; font-size: 0.75rem; cursor: pointer;}
+    .btn-inner:hover {background-color: #dbeafe;}
+
+    .color-pickers {display: flex; gap: 16px;}
+    .color-picker-item {display: flex; flex-direction: column; gap: 6px; flex: 1;}
+    .color-picker-item input[type="color"] {width: 100%; height: 38px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; background: none;}
+    
+    button.btn {padding: 10px 16px; background-color: #2da44e; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s;}
+    button.btn:hover {background-color: #2c974b;}
+
+    /* Output & Preview Area */
+    .workspace {flex: 1; display: flex; flex-direction: column; padding: 24px; gap: 20px;}
+    .preview-container {flex: 1; border: 1px solid #e1e4e8; border-radius: 8px; background: #fff; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
+    .preview-header {background: #f6f8fa; padding: 10px 16px; border-bottom: 1px solid #e1e4e8; font-weight: 600; font-size: 0.85rem; color: #57606a;}
+    iframe {width: 100%; height: 100%; border: none;}
+    .code-container {height: 200px; display: flex; flex-direction: column; border: 1px solid #e1e4e8; border-radius: 8px; background: #1e1e1e; overflow: hidden;}
+    .code-header {background: #2d2d2d; padding: 8px 16px; color: #ccc; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
+    .code-header button {background: #3c3c3c; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;}
+    textarea#generated-code {width: 100%; height: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: "Courier New", Courier, monospace; font-size: 0.85rem; resize: none; outline: none;}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Controls</h2>
+        <a href="index.html" class="home-btn">&larr; Home</a>
+    </div>
+    <div class="control-group">
+        <label for="doc-title">Website Title</label>
+        <input type="text" id="doc-title" value="Document">
+    </div>
+    <div class="control-group">
+        <label for="font-family">Font Family</label>
+        <select id="font-family">
+            <option value="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">System Default / Arial</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="Helvetica, sans-serif">Helvetica</option>
+            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Courier New', Courier, monospace">Courier New</option>
+            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+    </div>
+    <div class="add-buttons">
+        <button class="btn-secondary" onclick="addParagraph()">+ Text/Heading</button>
+        <button class="btn-secondary" onclick="addImage()">+ Photo</button>
+        <button class="btn-secondary" onclick="addLineBreak()">+ Break</button>
+        <button class="btn-secondary" onclick="addBox()">+ Box</button>
+    </div>
+    <div class="sections-container" id="sections-container">
+        <div class="section-card" data-type="heading">
+            <div class="section-header">
+                <span class="section-title">Main Heading</span>
+                <div class="section-actions">
+                    <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                    <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                </div>
+            </div>
+            <input type="text" class="section-input" value="My Website">
+        </div>
+        <div class="section-card" data-type="footer">
+            <div class="section-header">
+                <span class="section-title">Footer Text</span>
+                <div class="section-actions">
+                    <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                    <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                </div>
+            </div>
+            <input type="text" class="section-input" value="My Website">
+        </div>
+    </div>
+    <div class="color-pickers">
+        <div class="color-picker-item">
+            <label for="bg-color">Background</label>
+            <input type="color" id="bg-color" value="#ffffff">
+        </div>
+        <div class="color-picker-item">
+            <label for="text-color">Text Color</label>
+            <input type="color" id="text-color" value="#000000">
+        </div>
+    </div>
+    <button class="btn" onclick="copyCode()">Copy HTML Code</button>
+</aside>
+<main class="workspace">
+    <div class="preview-container">
+        <div class="preview-header">Live Preview</div>
+        <iframe id="preview-frame"></iframe>
+    </div>
+    <div class="code-container">
+        <div class="code-header">
+            <span>Generated Code</span>
+            <button onclick="copyCode()">Copy</button>
+        </div>
+        <textarea id="generated-code" readonly></textarea>
+    </div>
+</main>
+<script>
+const docTitle = document.getElementById('doc-title');
+const fontFamily = document.getElementById('font-family');
+const bgColor = document.getElementById('bg-color');
+const textColor = document.getElementById('text-color');
+const previewFrame = document.getElementById('preview-frame');
+const generatedCode = document.getElementById('generated-code');
+const sectionsContainer = document.getElementById('sections-container');
+
+function updateCode() {
+    const cards = sectionsContainer.querySelectorAll(':scope > .section-card');
+    let bodyElementsHtml = '';
+    
+    cards.forEach(card => {
+        const type = card.dataset.type;
+        if (type === 'heading') {
+            const val = card.querySelector('.section-input').value;
+            bodyElementsHtml += `  <header>\n    <h1>${val}</h1>\n  </header>\n`;
+        } else if (type === 'text-block') {
+            const tag = card.querySelector('.tag-selector').value;
+            const val = card.querySelector('.section-input').value;
+            bodyElementsHtml += `  <${tag}>${val}</${tag}>\n`;
+        } else if (type === 'image') {
+            const src = card.querySelector('.img-src-input').value;
+            const alt = card.querySelector('.img-alt-input').value;
+            bodyElementsHtml += `  <img src="${src}" alt="${alt}" style="max-width:100%; height:auto;">\n`;
+        } else if (type === 'br') {
+            bodyElementsHtml += `  <br>\n`;
+        } else if (type === 'box') {
+            let innerHtml = '';
+            const innerCards = card.querySelectorAll('.inner-card');
+            innerCards.forEach(inner => {
+                const innerType = inner.dataset.type;
+                if (innerType === 'text-block') {
+                    const tag = inner.querySelector('.tag-selector').value;
+                    const val = inner.querySelector('.section-input').value;
+                    innerHtml += `    <${tag}>${val}</${tag}>\n`;
+                } else if (innerType === 'image') {
+                    const src = inner.querySelector('.img-src-input').value;
+                    const alt = inner.querySelector('.img-alt-input').value;
+                    innerHtml += `    <img src="${src}" alt="${alt}" style="max-width:100%; height:auto;">\n`;
+                }
+            });
+            bodyElementsHtml += `  <div class="content-box">\n${innerHtml}  </div>\n`;
+        } else if (type === 'footer') {
+            const val = card.querySelector('.section-input').value;
+            bodyElementsHtml += `  <footer>\n    <p>&copy; ${new Date().getFullYear()} ${val}</p>\n  </footer>\n`;
+        }
+    });
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${docTitle.value}</title>
+<style>
+    body {font-family: ${fontFamily.value}; text-align: center; background-color: ${bgColor.value}; color: ${textColor.value}; padding: 20px;}
     .content-box {border: 1px solid #ccc; padding: 20px; border-radius: 8px; margin: 15px auto; max-width: 600px; background: rgba(0,0,0,0.02);}
 </style>
 </head>
 <body>
-  <header>
-    <h1>Grocery stores in Cotgrave</h1>
-  </header>
-  <p>There are three grocery stores in Cotgrave</p>
-  <div class="content-box">
-    <h2>The Cotgrave Sainsbury's</h2>
-    <p>Address: 3 Bingham Rd, Cotgrave, Nottingham NG12 3JS</p>
-    <p>Phone: 0330 013 7056</p>
-  </div>
-  <div class="content-box">
-    <h2>The Cotgrave Heron Foods</h2>
-    <p>Address: Unit 1, The Precinct, Candleby Lane, Cotgrave, Nottingham, NG12 3JQ</p>
-    <p>Phone: 0345 603 7300</p>
-  </div>
-  <div class="content-box">
-    <h2>The Cotgrave Co-op</h2>
-    <p>Address: Scotland Bank, Cotgrave, Nottingham NG12 3JZ</p>
-    <p>Phone: 0115 989 2381</p>
-  </div>
-  <footer>
-    <p>&copy; 2026 </p>
-  </footer>
+${bodyElementsHtml}</body>
+</html>`;
+
+    generatedCode.value = html;
+    previewFrame.srcdoc = html;
+}
+
+function addParagraph() {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.dataset.type = 'text-block';
+    card.innerHTML = `
+        <div class="section-header">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="section-title">Text</span>
+                <select class="tag-selector" style="padding: 2px 4px; font-size: 0.7rem; border-radius: 4px; border: 1px solid #d1d5db;">
+                    <option value="p">&lt;p&gt;</option>
+                    <option value="h1">&lt;h1&gt;</option>
+                    <option value="h2">&lt;h2&gt;</option>
+                    <option value="h3">&lt;h3&gt;</option>
+                    <option value="h4">&lt;h4&gt;</option>
+                    <option value="h5">&lt;h5&gt;</option>
+                    <option value="h6">&lt;h6&gt;</option>
+                </select>
+            </div>
+            <div class="section-actions">
+                <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+            </div>
+        </div>
+        <textarea class="section-input">text goes here</textarea>
+    `;
+    insertCard(card);
+    attachInputListeners(card);
+    card.querySelector('.tag-selector').addEventListener('change', updateCode);
+    updateCode();
+}
+
+function addImage() {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.dataset.type = 'image';
+    card.innerHTML = `
+        <div class="section-header">
+            <span class="section-title">Photo / Image</span>
+            <div class="section-actions">
+                <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+            </div>
+        </div>
+        <input type="text" class="img-src-input" placeholder="Image URL" value="https://via.placeholder.com/150">
+        <input type="text" class="img-alt-input" placeholder="Alt text" value="Sample Image">
+    `;
+    insertCard(card);
+    attachInputListeners(card);
+    updateCode();
+}
+
+function addLineBreak() {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.dataset.type = 'br';
+    card.innerHTML = `
+        <div class="section-header">
+            <span class="section-title">Line Break (&lt;br&gt;)</span>
+            <div class="section-actions">
+                <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+            </div>
+        </div>
+    `;
+    insertCard(card);
+    updateCode();
+}
+
+function addBox() {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.dataset.type = 'box';
+    card.innerHTML = `
+        <div class="section-header">
+            <span class="section-title">Content Box</span>
+            <div class="section-actions">
+                <button class="icon-btn" onclick="moveUp(this)">&uarr;</button>
+                <button class="icon-btn" onclick="moveDown(this)">&darr;</button>
+                <button class="icon-btn delete-btn" onclick="deleteSection(this)">&times;</button>
+            </div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+            <button class="btn-inner" onclick="addInnerParagraph(this)">+ Text</button>
+            <button class="btn-inner" onclick="addInnerImage(this)">+ Photo</button>
+        </div>
+        <div class="box-content-container"></div>
+    `;
+    insertCard(card);
+    updateCode();
+}
+
+function addInnerParagraph(btn) {
+    const boxCard = btn.closest('.section-card');
+    const container = boxCard.querySelector('.box-content-container');
+    const inner = document.createElement('div');
+    inner.className = 'inner-card';
+    inner.dataset.type = 'text-block';
+    inner.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 0.75rem; font-weight: 700; color: #4b5563;">Text</span>
+                <select class="tag-selector" style="padding: 2px 4px; font-size: 0.7rem; border-radius: 4px; border: 1px solid #d1d5db;">
+                    <option value="p">&lt;p&gt;</option>
+                    <option value="h1">&lt;h1&gt;</option>
+                    <option value="h2">&lt;h2&gt;</option>
+                    <option value="h3">&lt;h3&gt;</option>
+                    <option value="h4">&lt;h4&gt;</option>
+                    <option value="h5">&lt;h5&gt;</option>
+                    <option value="h6">&lt;h6&gt;</option>
+                </select>
+            </div>
+            <button class="icon-btn delete-btn" onclick="this.closest('.inner-card').remove(); updateCode();">&times;</button>
+        </div>
+        <textarea class="section-input">Box text</textarea>
+    `;
+    container.appendChild(inner);
+    attachInputListeners(inner);
+    inner.querySelector('.tag-selector').addEventListener('change', updateCode);
+    updateCode();
+}
+
+function addInnerImage(btn) {
+    const boxCard = btn.closest('.section-card');
+    const container = boxCard.querySelector('.box-content-container');
+    const inner = document.createElement('div');
+    inner.className = 'inner-card';
+    inner.dataset.type = 'image';
+    inner.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: #4b5563;">Photo</span>
+            <button class="icon-btn delete-btn" onclick="this.closest('.inner-card').remove(); updateCode();">&times;</button>
+        </div>
+        <input type="text" class="img-src-input" placeholder="Image URL" value="https://via.placeholder.com/150">
+        <input type="text" class="img-alt-input" placeholder="Alt text" value="Sample Image">
+    `;
+    container.appendChild(inner);
+    attachInputListeners(inner);
+    updateCode();
+}
+
+function insertCard(card) {
+    const footerCard = sectionsContainer.querySelector('[data-type="footer"]');
+    if (footerCard) {
+        sectionsContainer.insertBefore(card, footerCard);
+    } else {
+        sectionsContainer.appendChild(card);
+    }
+}
+
+function moveUp(btn) {
+    const card = btn.closest('.section-card');
+    if (card.previousElementSibling) {
+        sectionsContainer.insertBefore(card, card.previousElementSibling);
+        updateCode();
+    }
+}
+
+function moveDown(btn) {
+    const card = btn.closest('.section-card');
+    if (card.nextElementSibling) {
+        sectionsContainer.insertBefore(card.nextElementSibling, card);
+        updateCode();
+    }
+}
+
+function deleteSection(btn) {
+    const card = btn.closest('.section-card');
+    card.remove();
+    updateCode();
+}
+
+function attachInputListeners(element) {
+    const inputs = element.querySelectorAll('input, textarea');
+    inputs.forEach(input => input.addEventListener('input', updateCode));
+}
+
+function copyCode() {
+    generatedCode.select();
+    navigator.clipboard.writeText(generatedCode.value);
+    alert('Code copied to clipboard!');
+}
+
+docTitle.addEventListener('input', updateCode);
+fontFamily.addEventListener('change', updateCode);
+bgColor.addEventListener('input', updateCode);
+textColor.addEventListener('input', updateCode);
+sectionsContainer.querySelectorAll('.section-card').forEach(attachInputListeners);
+
+updateCode();
+</script>
 </body>
 </html>
